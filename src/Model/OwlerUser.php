@@ -2,6 +2,7 @@
 namespace UserFrosting\Sprinkle\Site\Model;
 
 use UserFrosting\Sprinkle\Account\Model\User;
+use UserFrosting\Sprinkle\Site\Model\Owler;
 
 class OwlerUser extends User {
 
@@ -14,7 +15,7 @@ class OwlerUser extends User {
         if (in_array($name, [
             'owler'
         ])) {
-            return true;
+            return isset($this->owler);
         } else {
             return parent::__isset($name);
         }
@@ -25,7 +26,7 @@ class OwlerUser extends User {
      */
     public function getCityAttribute($value)
     {
-        return $this->owler->city;
+        return (count($this->owler) ? $this->owler->city : '');
     }
 
     /**
@@ -33,7 +34,7 @@ class OwlerUser extends User {
      */
     public function getCountryAttribute($value)
     {
-        return $this->owler->country;
+        return (count($this->owler) ? $this->owler->country : '');
     }
 
     /**
@@ -49,7 +50,10 @@ class OwlerUser extends User {
      */
     public function save(array $options = array())
     {
+        $this->createRelatedOwlerIfNotExists();
+
         $this->owler->save();
+
         return parent::save($options);
     }
 
@@ -58,6 +62,8 @@ class OwlerUser extends User {
      */
     public function setCityAttribute($value)
     {
+        $this->createRelatedOwlerIfNotExists();
+
         $this->owler->city = $value;
     }
 
@@ -66,6 +72,19 @@ class OwlerUser extends User {
      */
     public function setCountryAttribute($value)
     {
+        $this->createRelatedOwlerIfNotExists();
+
         $this->owler->country = $value;
+    }
+
+    protected function createRelatedOwlerIfNotExists()
+    {
+        if (!count($this->owler)) {
+            $owler = new Owler([
+                'user_id' => $this->id
+            ]);
+
+            $this->setRelation('owler', $owler);
+        }
     }
 }

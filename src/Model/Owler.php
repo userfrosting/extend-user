@@ -5,6 +5,8 @@ use UserFrosting\Sprinkle\Core\Model\UFModel;
 
 class Owler extends UFModel {
 
+    public $timestamps = true;
+
     /**
      * @var string The name of the table for the current model.
      */
