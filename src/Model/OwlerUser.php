@@ -1,8 +1,8 @@
 <?php
-namespace UserFrosting\Sprinkle\Site\Model;
+namespace UserFrosting\Sprinkle\ExtendUser\Model;
 
 use UserFrosting\Sprinkle\Account\Model\User;
-use UserFrosting\Sprinkle\Site\Model\Owler;
+use UserFrosting\Sprinkle\ExtendUser\Model\Owler;
 
 class OwlerUser extends User {
 
@@ -42,7 +42,7 @@ class OwlerUser extends User {
      */
     public function owler()
     {
-        return $this->hasOne('\UserFrosting\Sprinkle\Site\Model\Owler', 'user_id');
+        return $this->hasOne('\UserFrosting\Sprinkle\ExtendUser\Model\Owler', 'user_id');
     }
 
     /**

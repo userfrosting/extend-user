@@ -1,5 +1,5 @@
 <?php
-namespace UserFrosting\Sprinkle\Site\Model;
+namespace UserFrosting\Sprinkle\ExtendUser\Model;
 
 use UserFrosting\Sprinkle\Core\Model\UFModel;
 

@@ -11,7 +11,7 @@
     "version": "1.0.0",
     "autoload": {
         "psr-4": {
-            "UserFrosting\\Sprinkle\\Site\\": "src/"
+            "UserFrosting\\Sprinkle\\ExtendUser\\": "src/"
         }
     }
 }

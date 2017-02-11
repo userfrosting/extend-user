@@ -6,17 +6,17 @@
  * @copyright Copyright (c) 2013-2016 Alexander Weissman
  * @license   https://github.com/userfrosting/UserFrosting/blob/master/licenses/UserFrosting.md (MIT License)
  */
-namespace UserFrosting\Sprinkle\Site;
+namespace UserFrosting\Sprinkle\ExtendUser;
 
-use UserFrosting\Sprinkle\Site\ServicesProvider\SiteServicesProvider;
+use UserFrosting\Sprinkle\ExtendUser\ServicesProvider\SiteServicesProvider;
 use UserFrosting\Sprinkle\Core\Initialize\Sprinkle;
 
 /**
- * Bootstrapper class for the 'site' sprinkle.
+ * Bootstrapper class for the 'extend-user' sprinkle.
  *
  * @author Alex Weissman (https://alexanderweissman.com)
  */
-class Site extends Sprinkle
+class ExtendUser extends Sprinkle
 {
     /**
      * Register Site services.
