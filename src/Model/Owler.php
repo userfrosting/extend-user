@@ -12,7 +12,8 @@ class Owler extends UFModel {
 
     protected $fillable = [
         "user_id",
-        "city"
+        "city",
+        "country"
     ];
 
     /**

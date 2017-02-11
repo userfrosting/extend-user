@@ -42,8 +42,7 @@ class OwlerController extends UserController
     /**
      * Returns a list of Owlers
      *
-     * Generates a list of users, optionally paginated, sorted and/or filtered.
-     * This page requires authentication.
+     * Overrides the base `UserController:getList` method, to display additional user fields.
      * Request type: GET
      */
     public function getList($request, $response, $args)
