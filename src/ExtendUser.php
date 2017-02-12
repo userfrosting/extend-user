@@ -8,7 +8,8 @@
  */
 namespace UserFrosting\Sprinkle\ExtendUser;
 
-use UserFrosting\Sprinkle\ExtendUser\ServicesProvider\SiteServicesProvider;
+use UserFrosting\Sprinkle\ExtendUser\Model\OwlerUser;
+use UserFrosting\Sprinkle\ExtendUser\ServicesProvider\ServicesProvider;
 use UserFrosting\Sprinkle\Core\Initialize\Sprinkle;
 
 /**
@@ -19,11 +20,11 @@ use UserFrosting\Sprinkle\Core\Initialize\Sprinkle;
 class ExtendUser extends Sprinkle
 {
     /**
-     * Register Site services.
+     * Register services.
      */
     public function init()
     {
-        $serviceProvider = new SiteServicesProvider();
+        $serviceProvider = new ServicesProvider();
         $serviceProvider->register($this->ci);
     }
 }

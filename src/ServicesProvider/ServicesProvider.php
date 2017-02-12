@@ -8,11 +8,15 @@
  */
 namespace UserFrosting\Sprinkle\ExtendUser\ServicesProvider;
 
+use Illuminate\Container\Container;
+use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Events\Dispatcher;
+
 /**
  *
  * @author Alex Weissman (https://alexanderweissman.com)
  */
-class SiteServicesProvider
+class ServicesProvider
 {
     /**
      * Register extended user fields services.
@@ -30,5 +34,30 @@ class SiteServicesProvider
             $classMapper->setClassMapping('user', 'UserFrosting\Sprinkle\ExtendUser\Model\OwlerUser');
             return $classMapper;
         });
+        
+        /**
+         * Initialize Eloquent Capsule, which provides the database layer for UF.
+         *
+         * @todo construct the individual objects rather than using the facade
+         */
+        $container['db'] = function ($c) {
+            $config = $c->config;
+
+            $capsule = new Capsule;
+
+            foreach ($config['db'] as $name => $dbConfig) {
+                $capsule->addConnection($dbConfig, $name);
+            }
+
+            $capsule->setEventDispatcher(new Dispatcher(new Container));
+
+            // Register as global connection
+            $capsule->setAsGlobal();
+
+            // Start Eloquent
+            $capsule->bootEloquent();
+
+            return $capsule;
+        };
     }
 }

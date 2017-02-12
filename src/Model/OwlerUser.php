@@ -1,10 +1,54 @@
 <?php
 namespace UserFrosting\Sprinkle\ExtendUser\Model;
 
+use Illuminate\Database\Capsule\Manager as Capsule;
 use UserFrosting\Sprinkle\Account\Model\User;
 use UserFrosting\Sprinkle\ExtendUser\Model\Owler;
 
+trait LinkOwler {
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function bootLinkOwler()
+    {
+        /**
+         * Create a new Owler if necessary, and save the associated owler every time.
+         */
+        static::saved(function ($owlerUser) {
+            $owlerUser->createRelatedOwlerIfNotExists();
+
+            // When creating a new OwlerUser, it might not have had a `user_id` when the `owler`
+            // relationship was created.  So, we should set it on the Owler if it hasn't been set yet.
+            if (!$owlerUser->owler->user_id) {
+                $owlerUser->owler->user_id = $owlerUser->id;
+            }
+
+            $owlerUser->owler->save();
+        });
+    }
+}
+    
 class OwlerUser extends User {
+    use LinkOwler;
+
+    protected $fillable = [
+        "user_name",
+        "first_name",
+        "last_name",
+        "email",
+        "locale",
+        "theme",
+        "group_id",
+        "flag_verified",
+        "flag_enabled",
+        "last_activity_id",
+        "password",
+        "deleted_at",
+        "city",
+        "country"
+    ];
 
     /**
      * Required to be able to access the `owler` relationship in Twig without needing to do eager loading.
@@ -46,18 +90,6 @@ class OwlerUser extends User {
     }
 
     /**
-     * Extends the model save() method to also save the related Owler object.
-     */
-    public function save(array $options = array())
-    {
-        $this->createRelatedOwlerIfNotExists();
-
-        $this->owler->save();
-
-        return parent::save($options);
-    }
-
-    /**
      * Custom mutator for Owler property
      */
     public function setCityAttribute($value)
@@ -77,6 +109,9 @@ class OwlerUser extends User {
         $this->owler->country = $value;
     }
 
+    /**
+     * If this instance doesn't already have a related Owler (either in the db on in the current object), then create one
+     */
     protected function createRelatedOwlerIfNotExists()
     {
         if (!count($this->owler)) {
