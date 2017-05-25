@@ -1,5 +1,5 @@
 {
-    "name": "userfrosting/sprinkle-extend-user",
+    "name": "userfrosting/extend-user",
     "type": "sprinkle",
     "license" : "MIT",
     "authors" : [
@@ -8,7 +8,7 @@
             "homepage": "https://alexanderweissman.com"
         }
     ],
-    "version": "1.0.0",
+    "version": "1.1.0",
     "autoload": {
         "psr-4": {
             "UserFrosting\\Sprinkle\\ExtendUser\\": "src/"
