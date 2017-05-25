@@ -3,14 +3,14 @@ namespace UserFrosting\Sprinkle\ExtendUser\Model;
 
 use UserFrosting\Sprinkle\Core\Model\UFModel;
 
-class Owler extends UFModel {
+class Member extends UFModel {
 
     public $timestamps = true;
 
     /**
      * @var string The name of the table for the current model.
      */
-    protected $table = "owlers";
+    protected $table = "members";
 
     protected $fillable = [
         "user_id",
@@ -23,15 +23,20 @@ class Owler extends UFModel {
      */
     public function scopeJoinUser($query)
     {
-        $query = $query->select('owlers.*');
+        /** @var UserFrosting\Sprinkle\Core\Util\ClassMapper $classMapper */
+        $classMapper = static::$ci->classMapper;
+        $membersTable = $classMapper->createInstance('member')->getTable();
+        $usersTable = $classMapper->createInstance('user')->getTable();
 
-        $query = $query->leftJoin('users', 'owlers.user_id', '=', 'users.id');
+        $query = $query->select("$membersTable.*");
+
+        $query = $query->leftJoin($usersTable, "$membersTable.user_id", '=', "$usersTable.id");
 
         return $query;
     }
 
     /**
-     * Get the user associated with this owler.
+     * Get the user associated with this member.
      */
     public function user()
     {

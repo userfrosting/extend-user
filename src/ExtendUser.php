@@ -8,7 +8,6 @@
  */
 namespace UserFrosting\Sprinkle\ExtendUser;
 
-use UserFrosting\Sprinkle\ExtendUser\Model\OwlerUser;
 use UserFrosting\Sprinkle\ExtendUser\ServicesProvider\ServicesProvider;
 use UserFrosting\Sprinkle\Core\Initialize\Sprinkle;
 

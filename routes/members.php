@@ -11,9 +11,9 @@
  * Routes for administrative user management.  Overrides routes defined in routes://admin/users.php
  */
 $app->group('/admin/users', function () {
-    $this->get('/u/{user_name}', 'UserFrosting\Sprinkle\ExtendUser\Controller\OwlerController:pageInfo');
+    $this->get('/u/{user_name}', 'UserFrosting\Sprinkle\ExtendUser\Controller\MemberController:pageInfo');
 })->add('authGuard');
 
 $app->group('/api/users', function () {
-    $this->get('', 'UserFrosting\Sprinkle\ExtendUser\Controller\OwlerController:getList');
+    $this->get('', 'UserFrosting\Sprinkle\ExtendUser\Controller\MemberController:getList');
 });

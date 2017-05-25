@@ -37,10 +37,10 @@ use UserFrosting\Support\Exception\HttpException;
  * @author Alex Weissman (https://alexanderweissman.com)
  * @see http://www.userfrosting.com/navigating/#structure
  */
-class OwlerController extends UserController
+class MemberController extends UserController
 {
     /**
-     * Returns a list of Owlers
+     * Returns a list of Members
      *
      * Overrides the base `UserController:getList` method, to display additional user fields.
      * Request type: GET
@@ -66,7 +66,7 @@ class OwlerController extends UserController
 
         $sprunje = new UserSprunje($classMapper, $params);
         $sprunje->extendQuery(function ($query) {
-            return $query->with('owler');
+            return $query->with('member');
         });
 
         // Be careful how you consume this data - it has not been escaped and contains untrusted user-supplied content.
