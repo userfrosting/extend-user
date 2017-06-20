@@ -9,13 +9,12 @@ git submodule add git@github.com:userfrosting/extend-user.git extend-user
 ```
 
 ### Add to the sprinkle list
-Edit UserFrosting `app/sprinkles/sprinkles.json` file and add `extend-user` to the sprinkle list to enable it.
+Edit UserFrosting `app/sprinkles.json` file and add `extend-user` to the sprinkle list to enable it.
 
 ### Update the assets build & composer
 
-- From the UserFrosting `/build` directory, run `npm run uf-assets-install`
-- Run `composer update` from the `app/` directory.
+- Run `composer update` from the base web directory.
 
 ### Run migration
 
-- From the `migrations/` directory, run `php install.php`.  This should discover and run the migration in the Sprinkle, creating the new table.
+- Run `php bakery bake` from the base web directory.

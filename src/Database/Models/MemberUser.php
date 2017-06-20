@@ -1,9 +1,9 @@
 <?php
-namespace UserFrosting\Sprinkle\ExtendUser\Model;
+namespace UserFrosting\Sprinkle\ExtendUser\Database\Models;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
-use UserFrosting\Sprinkle\Account\Model\User;
-use UserFrosting\Sprinkle\ExtendUser\Model\Member;
+use UserFrosting\Sprinkle\Account\Database\Models\User;
+use UserFrosting\Sprinkle\ExtendUser\Database\Models\Member;
 
 trait LinkMember {
     /**
@@ -29,7 +29,7 @@ trait LinkMember {
         });
     }
 }
-    
+
 class MemberUser extends User {
     use LinkMember;
 

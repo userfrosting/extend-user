@@ -1,83 +1,22 @@
 <?php
-/**
- * UserFrosting (http://www.userfrosting.com)
- *
- * @link      https://github.com/userfrosting/UserFrosting
- * @copyright Copyright (c) 2013-2016 Alexander Weissman
- * @license   https://github.com/userfrosting/UserFrosting/blob/master/licenses/UserFrosting.md (MIT License)
- */
 namespace UserFrosting\Sprinkle\ExtendUser\Controller;
 
-use Carbon\Carbon;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Slim\Exception\NotFoundException;
-use UserFrosting\Fortress\RequestDataTransformer;
-use UserFrosting\Fortress\RequestSchema;
-use UserFrosting\Fortress\ServerSideValidator;
-use UserFrosting\Fortress\Adapter\JqueryValidationAdapter;
-use UserFrosting\Sprinkle\Account\Model\Group;
-use UserFrosting\Sprinkle\Account\Model\User;
-use UserFrosting\Sprinkle\Account\Util\Password;
-use UserFrosting\Sprinkle\Admin\Sprunje\ActivitySprunje;
-use UserFrosting\Sprinkle\Admin\Sprunje\RoleSprunje;
-use UserFrosting\Sprinkle\Admin\Sprunje\UserSprunje;
 use UserFrosting\Sprinkle\Admin\Controller\UserController;
 use UserFrosting\Sprinkle\Core\Facades\Debug;
-use UserFrosting\Sprinkle\Core\Mail\EmailRecipient;
-use UserFrosting\Sprinkle\Core\Mail\TwigMailMessage;
-use UserFrosting\Support\Exception\BadRequestException;
 use UserFrosting\Support\Exception\ForbiddenException;
-use UserFrosting\Support\Exception\HttpException;
 
-/**
- *
- * @author Alex Weissman (https://alexanderweissman.com)
- * @see http://www.userfrosting.com/navigating/#structure
- */
 class MemberController extends UserController
 {
     /**
-     * Returns a list of Members
-     *
-     * Overrides the base `UserController:getList` method, to display additional user fields.
-     * Request type: GET
-     */
-    public function getList($request, $response, $args)
-    {
-        // GET parameters
-        $params = $request->getQueryParams();
-
-        /** @var UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager */
-        $authorizer = $this->ci->authorizer;
-
-        /** @var UserFrosting\Sprinkle\Account\Model\User $currentUser */
-        $currentUser = $this->ci->currentUser;
-
-        // Access-controlled page
-        if (!$authorizer->checkAccess($currentUser, 'uri_users')) {
-            throw new ForbiddenException();
-        }
-
-        /** @var UserFrosting\Sprinkle\Core\Util\ClassMapper $classMapper */
-        $classMapper = $this->ci->classMapper;
-
-        $sprunje = new UserSprunje($classMapper, $params);
-        $sprunje->extendQuery(function ($query) {
-            return $query->with('member');
-        });
-
-        // Be careful how you consume this data - it has not been escaped and contains untrusted user-supplied content.
-        // For example, if you plan to insert it into an HTML DOM, you must escape it on the client side (or use client-side templating).
-        return $sprunje->toResponse($response);
-    }
-
-    /**
      * Renders a page displaying a user's information, in read-only mode.
      *
-     * Overrides the base `UserController:pageInfo` method, to display additional user fields.
+     * This checks that the currently logged-in user has permission to view the requested user's info.
+     * It checks each field individually, showing only those that you have permission to view.
+     * This will also try to show buttons for activating, disabling/enabling, deleting, and editing the user.
+     * This page requires authentication.
      * Request type: GET
      */
     public function pageInfo($request, $response, $args)
@@ -90,43 +29,40 @@ class MemberController extends UserController
             return $response->withRedirect($usersPage, 404);
         }
 
-        /** @var UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager */
+        /** @var UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager $authorizer */
         $authorizer = $this->ci->authorizer;
 
-        /** @var UserFrosting\Sprinkle\Account\Model\User $currentUser */
+        /** @var UserFrosting\Sprinkle\Account\Database\Models\User $currentUser */
         $currentUser = $this->ci->currentUser;
 
         // Access-controlled page
         if (!$authorizer->checkAccess($currentUser, 'uri_user', [
-                'user' => $user
-            ])) {
+            'user' => $user
+        ])) {
             throw new ForbiddenException();
         }
 
-        /** @var Config $config */
+        /** @var UserFrosting\Config\Config $config */
         $config = $this->ci->config;
 
         // Get a list of all locales
-        $locales = $config['site.locales.available'];
+        $locales = $config->getDefined('site.locales.available');
 
         // Determine fields that currentUser is authorized to view
-        $fieldNames = ['name', 'email', 'locale', 'address'];
+        $fieldNames = ['user_name', 'name', 'email', 'locale', 'group', 'roles', 'address'];
 
         // Generate form
         $fields = [
             // Always hide these
-            'hidden' => ['user_name', 'group', 'theme'],
-            'disabled' => []
+            'hidden' => ['theme']
         ];
 
-        // Determine which fields should be hidden entirely
+        // Determine which fields should be hidden
         foreach ($fieldNames as $field) {
-            if ($authorizer->checkAccess($currentUser, 'view_user_field', [
+            if (!$authorizer->checkAccess($currentUser, 'view_user_field', [
                 'user' => $user,
                 'property' => $field
             ])) {
-                $fields['disabled'][] = $field;
-            } else {
                 $fields['hidden'][] = $field;
             }
         }
@@ -180,10 +116,10 @@ class MemberController extends UserController
         return $this->ci->view->render($response, 'pages/user.html.twig', [
             'user' => $user,
             'locales' => $locales,
-            'form' => [
-                'fields' => $fields,
-                'edit_buttons' => $editButtons
-            ]
+            'fields' => $fields,
+            'tools' => $editButtons
         ]);
     }
+
+
 }

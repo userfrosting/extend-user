@@ -1,16 +1,9 @@
 <?php
-/**
- * UserFrosting (http://www.userfrosting.com)
- *
- * @link      https://github.com/userfrosting/UserFrosting
- * @license   https://github.com/userfrosting/UserFrosting/blob/master/licenses/UserFrosting.md (MIT License)
- */
+
+// In /app/sprinkles/site/src/ServicesProvider/ServicesProvider.php
+
 namespace UserFrosting\Sprinkle\ExtendUser\ServicesProvider;
 
-/**
- *
- * @author Alex Weissman (https://alexanderweissman.com)
- */
 class ServicesProvider
 {
     /**
@@ -23,11 +16,11 @@ class ServicesProvider
         /**
          * Extend the 'classMapper' service to register model classes.
          *
-         * Mappings added: Member, MemberUser
+         * Mappings added: MemberUser
          */
         $container->extend('classMapper', function ($classMapper, $c) {
-            $classMapper->setClassMapping('member', 'UserFrosting\Sprinkle\ExtendUser\Model\Member');
-            $classMapper->setClassMapping('user', 'UserFrosting\Sprinkle\ExtendUser\Model\MemberUser');
+            $classMapper->setClassMapping('member', 'UserFrosting\Sprinkle\ExtendUser\Database\Models\Member');
+            $classMapper->setClassMapping('user', 'UserFrosting\Sprinkle\ExtendUser\Database\Models\MemberUser');
             return $classMapper;
         });
     }
