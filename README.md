@@ -1,4 +1,4 @@
-# User Extension Sprinkle
+# User Extension Sprinkle (UserFrosting 4.1)
 
 Example sprinkle for extending the User class to contain additional fields.
 
@@ -13,8 +13,8 @@ Edit UserFrosting `app/sprinkles.json` file and add `extend-user` to the sprinkl
 
 ### Update the assets build & composer
 
-- Run `composer update` from the base web directory.
+- Run `composer update` from the root project directory.
 
 ### Run migration
 
-- Run `php bakery bake` from the base web directory.
+- Run `php bakery bake` from the root project directory.
