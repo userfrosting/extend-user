@@ -16,11 +16,10 @@ class ServicesProvider
         /**
          * Extend the 'classMapper' service to register model classes.
          *
-         * Mappings added: MemberUser
+         * Mappings added: Member
          */
         $container->extend('classMapper', function ($classMapper, $c) {
-            $classMapper->setClassMapping('member', 'UserFrosting\Sprinkle\ExtendUser\Database\Models\Member');
-            $classMapper->setClassMapping('user', 'UserFrosting\Sprinkle\ExtendUser\Database\Models\MemberUser');
+            $classMapper->setClassMapping('user', 'UserFrosting\Sprinkle\ExtendUser\Database\Models\Member');
             return $classMapper;
         });
     }
