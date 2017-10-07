@@ -120,6 +120,4 @@ class MemberController extends UserController
             'tools' => $editButtons
         ]);
     }
-
-
 }
