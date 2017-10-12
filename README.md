@@ -2,16 +2,25 @@
 
 Example sprinkle for extending the User class to contain additional fields.
 
-## Install
-`cd` into the sprinkle directory of UserFrosting and clone as submodule:
+# Installation
+
+Edit UserFrosting `app/sprinkles.json` and add the following to the `require` list : `"userfrosting/extend-user": "~4.1.1"`. Also add `extend-user` to the `base` list. For example:
+
 ```
-git submodule add git@github.com:userfrosting/extend-user.git extend-user
+{
+    "require": {
+        "userfrosting/extend-user": "~4.1.1"
+    },
+    "base": [
+        "core",
+        "account",
+        "admin",
+        "extend-user"
+    ]
+}
 ```
 
-### Add to the sprinkle list
-Edit UserFrosting `app/sprinkles.json` file and add `extend-user` to the sprinkle list to enable it.
-
-### Update the assets build & composer
+### Update Composer
 
 - Run `composer update` from the root project directory.
 
