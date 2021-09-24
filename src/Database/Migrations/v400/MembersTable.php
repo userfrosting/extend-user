@@ -1,7 +1,7 @@
 <?php
 namespace UserFrosting\Sprinkle\ExtendUser\Database\Migrations\v400;
 
-use UserFrosting\System\Bakery\Migration;
+use UserFrosting\Sprinkle\Core\Database\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\Builder;
 
