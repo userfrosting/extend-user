@@ -113,7 +113,7 @@ class Member extends User
      */
     protected function createAuxIfNotExists()
     {
-        if ($this->auxType && !count($this->aux)) {
+        if ($this->auxType && is_null($this->aux)) {
             // Create aux model and set primary key to be the same as the main user's
             $aux = new $this->auxType;
 
